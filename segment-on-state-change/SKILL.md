@@ -26,16 +26,19 @@ is built from it a claim that can be discharged and read back.
 
 ## The six boundary features
 
-Each is scored on `[0, 1]` over an adjacent pair of events.
+Each is scored on `[0, 1]` over an adjacent pair of events. The weights, the
+thresholds and the signals strong enough to split on their own are in
+[references/parameters.yaml](references/parameters.yaml); read it rather than
+working from a number quoted in prose.
 
-| feature | weight | source |
-|---|---|---|
-| `state_change` | 0.30 | the IR; whether the later event carries one |
-| `focus_shift` | 0.20 | the IR; whether the actor differs |
-| `goal_shift` | 0.15 | adjudicator model |
-| `spatial_shift` | 0.15 | **unmeasurable** where events carry no location |
-| `reveal` | 0.10 | adjudicator model |
-| `importance_delta` | 0.10 | the IR |
+| feature | source |
+|---|---|
+| `state_change` | the IR; whether the later event carries one |
+| `focus_shift` | the IR; whether the actor differs |
+| `goal_shift` | adjudicator model |
+| `spatial_shift` | **unmeasurable** where events carry no location |
+| `reveal` | adjudicator model |
+| `importance_delta` | the IR |
 
 Leave a feature unmeasured rather than inventing it. `spatial_shift` has no
 source when events carry no location of their own, and estimating it from
@@ -55,12 +58,10 @@ S = sum(w_g * f_g for g in measured) / sum(w_g for g in measured)
 
 ```
 SPLIT       if any feature reaches its sufficient-alone threshold,
-            or S >= 0.55
-MERGE       if S <= 0.20
+            or S >= thresholds.tau_high
+MERGE       if S <= thresholds.tau_low
 ADJUDICATE  otherwise
 ```
-
-Sufficient alone: `state_change` 1.0, `goal_shift` 0.7, `reveal` 0.7.
 
 A merge and an unresolved adjudication both keep the events together, because
 over-splitting produces beats with no state change in them, and those have

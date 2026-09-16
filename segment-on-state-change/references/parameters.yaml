@@ -1,0 +1,35 @@
+# The segmenter's numbers, in one place.
+#
+# SKILL.md explains what each of these does and points here rather than
+# restating them, because a threshold written twice is a threshold that will
+# eventually disagree with itself. Anything reading this skill -- an agent
+# following the instructions, or a program compiling them -- reads these.
+
+# Weights over the six boundary features. `spatial_shift` is declared and
+# never emitted where events carry no location of their own; it keeps its
+# weight so the published design and this implementation stay comparable, and
+# the score renormalises over what was actually measured.
+weights:
+  state_change:     0.30
+  focus_shift:      0.20     # the design calls it causal_shift
+  goal_shift:       0.15     # adjudicated
+  spatial_shift:    0.15     # unmeasurable from an IR without locations
+  reveal:           0.10     # adjudicated
+  importance_delta: 0.10
+
+# Which of the six a script IR can supply directly. The other three come from
+# an adjudicator model, or from nowhere.
+measurable_from_ir: [state_change, focus_shift, importance_delta]
+
+thresholds:
+  tau_high: 0.55   # at or above, split
+  tau_low:  0.20   # at or below, merge
+
+# Signals strong enough to split on their own, whatever the weighted score
+# says. A measured choice: under the weighted sum alone, 40 of 41 adjudicated
+# pairs merged, and admitting one strong signal took one film from 26 beats
+# to 39.
+sufficient_alone:
+  state_change: 1.0
+  goal_shift:   0.7
+  reveal:       0.7

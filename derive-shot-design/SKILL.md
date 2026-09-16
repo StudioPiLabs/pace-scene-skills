@@ -55,9 +55,11 @@ a new worldview.
 | `camera_movement` | one of the movement vocabulary |
 | `note` | one line of practical staging |
 
-The three vocabularies are closed. See
-[references/vocabulary.md](references/vocabulary.md); a token outside them
-produces a field nothing downstream can read.
+The three vocabularies are closed, and they live in
+[references/vocabulary.yaml](references/vocabulary.yaml). Read it before
+answering: a token outside those lists produces a field nothing downstream
+can read. It also gives the headings the film's own top matter appears
+under.
 
 Return ONE JSON object: `{"groups": [...]}`. No prose, no markdown fences.
 

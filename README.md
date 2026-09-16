@@ -36,6 +36,29 @@ cp -r pace-scene-skills/derive-shot-design ~/.claude/skills/
 `~/.claude/skills/` makes a skill available everywhere; `.claude/skills/`
 inside a project scopes it to that project.
 
+## Reading them from a program
+
+A program that compiles a skill into an LLM call should get the same text an
+agent would follow, from the same file, rather than keeping its own copy in a
+string constant.
+
+```bash
+pip install git+https://github.com/StudioPiLabs/pace-scene-skills
+```
+
+```python
+from pace_scene_skills import load
+
+s = load("derive-shot-design")
+s.instructions                    # the SKILL.md body, frontmatter stripped
+s.reference("vocabulary.yaml")    # parsed, from references/
+
+load("segment-on-state-change").reference("parameters.yaml")["thresholds"]
+# {'tau_high': 0.55, 'tau_low': 0.2}
+```
+
+Set `PACE_SKILLS_PATH` to read from a checkout instead of the installed copy.
+
 ## What each one refuses to claim
 
 This is the part worth reading before using them.
