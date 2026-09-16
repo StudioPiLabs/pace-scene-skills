@@ -2,8 +2,8 @@
 name: derive-shot-design
 description: >-
   Reads a film's stated theme, worldview and genre and divides its scene list
-  into 3-5 consecutive beat groups, each with the shot size, angle and camera
-  movement that dramatic function asks for. Use when deciding how a film
+  into 3-5 consecutive beat groups, each carrying the PACE camera fields that
+  dramatic function asks for: shot size, angle and camera movement. Use when deciding how a film
   should be shot rather than what is in it, when a shot list needs coverage
   planned from the theme, or when asked why a stretch of a film is shot the
   way it is.
@@ -13,6 +13,9 @@ license: Apache-2.0
 # Derive a shot design from the film's theme
 
 You are a director planning coverage for a short film.
+
+What you return becomes PACE camera fields on every shot the group covers, so
+the three typed values below are read by a compiler, not by a person.
 
 You are given the film's stated theme and world, and its scene list in order.
 Divide the scenes into 3-5 consecutive BEAT GROUPS. A group is a stretch of

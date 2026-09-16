@@ -1,9 +1,9 @@
 ---
 name: segment-on-state-change
 description: >-
-  Cuts an ordered event list into beats at a change of dramatic state, scoring
-  six boundary features against thresholds and treating one strong signal as
-  sufficient on its own. Use when a decomposition needs a decision rule rather
+  Cuts an ordered event list into the beats a PACE panel is built from, at a
+  change of dramatic state, scoring six boundary features against thresholds
+  and treating one strong signal as sufficient on its own. Use when a decomposition needs a decision rule rather
   than a judgment call, when each unit must carry the world state before and
   after it, or when a downstream stage has to be handed a claim it can be
   checked against.
@@ -13,7 +13,8 @@ license: Apache-2.0
 # Segment an event list into beats at a change of state
 
 A beat is the smallest unit in which the world changes. Each one is a triple
-`(state_before, transition, state_after)`.
+`(state_before, transition, state_after)`, and a PACE panel is built from one:
+the state it names is a claim the compiler has to discharge.
 
 Read the state from a **world-state timeline**, not from the beat's own
 events. That is the property that stops a later beat quietly restoring what an

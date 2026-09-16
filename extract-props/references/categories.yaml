@@ -1,0 +1,26 @@
+# The closed category vocabulary for a prop.
+#
+# SKILL.md points here rather than listing them inline, for the same reason
+# the other skills do: a vocabulary written twice is a vocabulary that will
+# eventually disagree with itself. A value outside this list produces a field
+# nothing downstream can read.
+#
+# The distinction the list is drawing is what a production has to source and
+# hand to someone. `furniture_movable` is in it because a chair an actor
+# carries is a prop; a chair bolted to the set is dressing, and belongs to the
+# location bible.
+
+category:
+  - small_handheld
+  - wearable
+  - furniture_movable
+  - vehicle
+  - weapon
+  - document
+
+# Where the things that are NOT props live, so a prop list does not swallow
+# them and produce a duplicate that later disagrees with the original.
+belongs_elsewhere:
+  architectural_fixtures: location bible   # lights, doors, windows, walls
+  wardrobe:               character record # clothing worn rather than carried
+  landscape:              location         # vegetation, water, large buildings

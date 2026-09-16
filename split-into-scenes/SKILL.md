@@ -1,10 +1,10 @@
 ---
 name: split-into-scenes
 description: >-
-  Cuts a screenplay into scenes on a stated boundary rule (a change of
-  location, time-of-day, or character constellation) and returns each scene
-  as typed fields, including the key_actions list that sets the initial shot
-  granularity. Use when breaking a script or treatment into scenes, building
+  Cuts a screenplay into the scenes of a PACE document, on a stated boundary
+  rule (a change of location, time-of-day, or character constellation), and
+  returns each scene as typed PACE fields including the key_actions list that
+  sets the initial shot granularity. Use when breaking a script or treatment into scenes, building
   a shot list or storyboard breakdown from a screenplay, or when asked how
   many scenes or shots a script contains.
 license: Apache-2.0
@@ -13,6 +13,9 @@ license: Apache-2.0
 # Split a screenplay into scenes
 
 You are a script supervisor. Break the script into individual scenes.
+
+The output is a **PACE document**: these are typed fields a compiler reads and
+stages, not notes about the script.
 
 ## The boundary rule
 
