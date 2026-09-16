@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pace-scene-skills"
-version = "0.1.0"
+version = "0.2.0"
 description = "The skills that break a screenplay down for PACE: scene boundaries, theme-driven shot design, and beat segmentation."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,10 +21,15 @@ Homepage = "https://github.com/StudioPiLabs/pace-scene-skills"
 [tool.hatch.build.targets.wheel]
 packages = ["pace_scene_skills"]
 
+# One line per skill, and a test asserts this list is every directory that
+# holds a SKILL.md: two skills were added once and left out of the wheel,
+# where they loaded from a checkout and vanished on install.
 [tool.hatch.build.targets.wheel.force-include]
 "split-into-scenes" = "pace_scene_skills/split-into-scenes"
 "derive-shot-design" = "pace_scene_skills/derive-shot-design"
 "segment-on-state-change" = "pace_scene_skills/segment-on-state-change"
+"extract-props" = "pace_scene_skills/extract-props"
+"enrich-to-scine" = "pace_scene_skills/enrich-to-scine"
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -32,6 +37,8 @@ include = [
   "split-into-scenes",
   "derive-shot-design",
   "segment-on-state-change",
+  "extract-props",
+  "enrich-to-scine",
   "README.md",
   "LICENSE",
 ]

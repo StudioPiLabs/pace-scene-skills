@@ -88,3 +88,21 @@ def test_a_missing_skill_names_the_ones_that_exist():
     with pytest.raises(SkillNotFound) as e:
         load("no-such-skill")
     assert "derive-shot-design" in str(e.value)
+
+
+def test_every_skill_ships_in_the_wheel():
+    """A skill added to the repository and left out of force-include loads
+    from a checkout and disappears on install, which is the worst shape for
+    this bug: it works everywhere it is developed."""
+    import pathlib
+    import tomllib
+
+    root = skills_root()
+    pyproject = root / "pyproject.toml"
+    if not pyproject.is_file():          # installed, not a checkout
+        pytest.skip("not a source checkout")
+    cfg = tomllib.loads(pyproject.read_text())
+    shipped = set(cfg["tool"]["hatch"]["build"]["targets"]["wheel"]["force-include"])
+    assert shipped == set(NAMES), f"not shipped: {sorted(set(NAMES) - shipped)}"
+    sdist = set(cfg["tool"]["hatch"]["build"]["targets"]["sdist"]["include"])
+    assert set(NAMES) <= sdist, f"missing from sdist: {sorted(set(NAMES) - sdist)}"
