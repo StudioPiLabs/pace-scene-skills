@@ -1,0 +1,60 @@
+id: derive_shot_design
+level: film
+consumes: [theme, worldview, genre, scene_list]
+produces: [beat_groups]
+
+# This is the skill the theme, the world and the genre actually drive. It
+# reads the film's own top matter -- 核心主题, 世界观设定, 题材 -- and returns
+# the groups a director would shoot alike, each with the camera that reading
+# asks for. Everything downstream (which shot size a scene defaults to,
+# whether a shot still serves the theme) hangs off what this returns.
+role: You are a director planning coverage for a short film.
+
+instruction: |
+  You are given the film's stated theme and world, and its scene list in order.
+  Divide the scenes into 3-5 consecutive BEAT GROUPS. A group is a stretch of
+  the film that should be shot the same way because it is doing the same
+  dramatic work. Groups must not overlap, must cover every scene, and must keep
+  the scenes in order.
+
+# The one sentence that makes this a theme-driven skill rather than a coverage
+# heuristic. Without it the groups come out as an even carve of the scene list.
+drive: |
+  Let the THEME drive the choices. If the theme is about a person being erased,
+  the camera should say so — a group where the character still has agency and a
+  group where the frame has taken it away should not be shot alike.
+
+returns:
+  id:              short snake_case label for what the group is doing
+  scenes:          list of scene_ids, consecutive
+  intent:          |
+    2-3 sentences: the dramatic function, and WHY that asks for this camera.
+    Write about meaning, not about the picture -- this text is never used as
+    an image prompt.
+  shot_size:       one of vocabulary.shot_size
+  angle:           one of vocabulary.angle
+  camera_movement: one of vocabulary.camera_movement
+  note:            one line of practical staging
+
+context_format: |
+  THEME (核心主题): {theme}
+  WORLD (世界观设定): {design_language}
+  GENRE (题材): {genre}
+
+  SCENES:
+    {scene_id}  {scene_heading}  [{n} shots]  {summary}
+
+output: |
+  Return ONE JSON object: {"groups": [...]}. No prose, no markdown fences.
+
+# `intent` is provenance, never an image prompt. Compiling a director's note
+# produces a picture OF the note: "watching them like a surveillance feed"
+# draws a surveillance feed.
+never_compiled_to_prompt: [intent]
+
+# A group naming a scene that does not exist, or a value the compilers cannot
+# read, is worse than no group at all.
+validate:
+  - every scenes[] entry exists in the scene list
+  - groups are consecutive, non-overlapping, and cover every scene
+  - shot_size, angle, camera_movement are in the vocabulary
