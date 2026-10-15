@@ -8,7 +8,9 @@
 # The distinction the list is drawing is what a production has to source and
 # hand to someone. `furniture_movable` is in it because a chair an actor
 # carries is a prop; a chair bolted to the set is dressing, and belongs to the
-# location bible.
+# location bible. `wearable` covers garments as well as worn devices: a
+# costume needs an id and states for the same reason a lantern does, since a
+# sentence on a character record cannot be compared across a cut.
 
 category:
   - small_handheld
@@ -22,5 +24,10 @@ category:
 # them and produce a duplicate that later disagrees with the original.
 belongs_elsewhere:
   architectural_fixtures: location bible   # lights, doors, windows, walls
-  wardrobe:               character record # clothing worn rather than carried
   landscape:              location         # vegetation, water, large buildings
+
+# Garment ids, so a shot references a costume instead of restating it.
+wearable_id_convention:
+  one_costume:  "<character_id>_costume"
+  named:        "<character_id>_costume_<name>"
+  states:       [clean, worn, damaged, soiled]
