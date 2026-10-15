@@ -20,15 +20,20 @@ named in a compiled prompt, so an invented prop is an object that gets built.
 
 ## What counts as a prop
 
-A prop is a **portable object**, distinct from architectural fixtures and
-wardrobe. The boundary is what the production has to source and hand to
-someone, not what appears in the frame.
+A prop is anything the production has to **source and hand to someone**:
+objects characters carry, place or hold, and the garments they wear. The
+boundary is sourcing, not what appears in the frame.
+
+Garments are props here, under `wearable`. They are not a character's
+description. A costume written as a sentence on a character cannot be compared
+across a cut, because there is no identifier for two shots to disagree about;
+written as an entry with an id and states, a change of costume between two
+shots of one scene is a fact something can report.
 
 Do **not** include:
 
 - architectural fixtures (lights, doors, windows, walls) — those belong to the
   location bible
-- wardrobe and clothing — those belong to the character records
 - vegetation, bodies of water, large buildings — those are part of the
   location
 
@@ -45,8 +50,14 @@ duplicates that then disagree with each other.
 | `anchor` | 6-15 word prompt fragment describing the prop visually |
 | `size_m` | rough `[width, depth, height]` in metres |
 | `linked_scenes` | list of `scene_id` values that reference this prop |
-| `continuity_states` | optional dict; named states the prop can be in (open/closed, lit/dark) |
+| `continuity_states` | optional dict; named states the prop can be in (open/closed, lit/dark, clean/soiled) |
+| `worn_by` | for a `wearable` garment, the `character_id` who wears it |
 | `production_notes` | optional one-sentence note about why the prop matters |
+
+Give a garment the id `<character_id>_costume`, and
+`<character_id>_costume_<name>` when a character has more than one, and set
+`worn_by`. A shot then references it through `setup.subjects[].costume_id`
+rather than restating the sentence or listing it in `setup.props`.
 
 `category` is closed. It lives in
 [references/categories.yaml](references/categories.yaml); a value outside that

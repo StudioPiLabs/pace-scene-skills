@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pace-scene-skills"
-version = "0.2.0"
+version = "0.2.2"
 description = "The skills that break a screenplay down for PACE: scene boundaries, theme-driven shot design, and beat segmentation."
 readme = "README.md"
 requires-python = ">=3.10"

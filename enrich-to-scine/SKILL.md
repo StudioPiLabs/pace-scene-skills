@@ -70,11 +70,17 @@ Rules:
      or compound like "lower_left", "upper_right". null when unknown.
    - screen_position.depth: "foreground" / "midground" / "background"
      based on how close to the camera the subject sits.
+   - costume_id: the garment this subject wears in this shot, chosen from
+     that subject's `costumes` list in the input. Keep the same id across
+     the shots of a scene unless the narrative changes the costume. null
+     when the list is empty or the narrative does not say; never an id
+     that is not in the list.
 
 9. PROPS (`setup.props`). List every named object visible in this shot
    that's bigger than a fingertip and smaller than the room itself
    (sword, scroll, teacup, lantern, manuscript, basket). Skip if you'd
-   be guessing. One entry per distinct object — same prop across shots
+   be guessing. Do not list garments a subject wears: those are
+   referenced by the subject's costume_id. One entry per distinct object — same prop across shots
    should keep the SAME `prop_id` (use lowercase snake_case, e.g.
    "translation_scroll", "ochre_kashaya"). Fields:
      prop_id  (required)   snake_case, stable across shots
@@ -177,6 +183,7 @@ Return ONE JSON object, no prose, no markdown fence. Shape:
       "subjects": [
         {
           "character_id": "...",    // matches an existing subjects[].character_id
+          "costume_id": null,       // one of this subject's input costumes, or null
           "gaze": {
             "target_type": "...",   // character / object / feature / camera (or null)
             "target_ref":  "...",   // id/name; null if direction is set instead
