@@ -46,6 +46,12 @@ SCENES:
 Use the author's own sentences. A model asked to summarise a worldview writes
 a new worldview.
 
+If the author's theme or worldview is unavailable, leave that interpretation
+unassigned and explain the missing input; do not supply a new premise.
+Respect the provided scene order and explicit continuity, including changes
+in posture, injuries, held props and object state. A new coverage group does
+not reset those states.
+
 ## What to return for each group
 
 | field | note |
@@ -57,6 +63,7 @@ a new worldview.
 | `angle` | one of the angle vocabulary |
 | `camera_movement` | one of the movement vocabulary |
 | `note` | one line of practical staging |
+| `source_notes` | supplied footnotes/directions quoted verbatim with their scene ID; [] when absent |
 
 The three vocabularies are closed, and they live in
 [references/vocabulary.yaml](references/vocabulary.yaml). Read it before
@@ -72,6 +79,15 @@ Do not compile `intent` into a prompt for an image or video model. Compiling
 a director's note produces a picture *of the note*: "watching them like a
 surveillance feed" draws a surveillance feed. The prose exists to say which
 reading of the theme a shot was built for.
+
+## Keep proposed coverage distinct from a finished film
+
+This skill proposes coverage. Its inferred intent, group camera values and
+staging note are not observations of a finished film. Preserve explicit
+script directions and footnotes in `source_notes`, distinguish them from
+your proposed choices, and make conflicts visible. A production direction
+still needs an alignment and film check before it can support annotation.
+Do not change the breakdown to make a reconstruction score pass.
 
 ## Validate before returning
 
