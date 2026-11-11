@@ -47,7 +47,7 @@ inside one location at one time is a shot boundary, and it is handled by
 | `location_raw` | str | location as it appears in the text |
 | `time_of_day` | str | night, morning, dusk, afternoon |
 | `characters_present` | list[str] | physically present agents, including unnamed groups; lowercase IDs |
-| `vo_lines` | list[object] | offscreen speech: `{"speaker": "id", "text": "verbatim speech"}` |
+| `dialogue` | list[object] | every spoken line in source order: `{"speaker": "id", "text": "verbatim speech", "on_screen": bool, "after_action": int \| null}` |
 | `summary` | str | one sentence |
 | `story_beat` | str | 1-3 word arc tag: opening / first connection / climax |
 | `story_text` | str | the verbatim text passages that fall in this scene |
@@ -76,7 +76,13 @@ catching them are not two people standing. Carry state changes forward until
 the text changes them. A conditional plan, remembered event or spoken claim
 is not automatically an action happening now. Do not turn dialogue into a
 physical event or assume that every scene character appears in every shot.
-O.S., V.O. and O.C. speech goes in `vo_lines`. Include its speaker in
+Every spoken line goes in `dialogue`, once, verbatim and in source order,
+with its speaker's ID from `characters_present` (or the offscreen speaker's
+lowercase ID). `on_screen` is false for O.S., V.O., O.C., phone and recalled
+speech. `after_action` is the 0-based index of the last `key_actions` entry
+before the line in the source, or null when the line comes before every action.
+A line that runs across several actions keeps the index of the action it
+starts after; do not split or repeat it. Include an offscreen speaker in
 `characters_present` only if separate action text establishes physical
 presence in that scene. A crowd or unnamed attackers still count as agents;
 do not replace them with an offscreen named speaker.
