@@ -54,6 +54,8 @@ inside one location at one time is a shot boundary, and it is handled by
 | `implied_shot_count` | int | rough estimate of shots needed to cover the scene |
 | `key_actions` | list[str] | the discrete physical actions that drive the scene |
 | `action_evidence` | list[object] | parallel to `key_actions`: `{"quote": "exact source substring"}` for each action |
+| `axis` | object \| null | the line of action: `{"between": ["id", "id"]}`, the two present characters the scene's main exchange runs between; null without one |
+| `coverage` | list[object] | the shots that cover the scene, in order (see below) |
 | `source_notes` | list[object] | `{"kind": "footnote"\|"camera_direction"\|"sound"\|"continuity"\|"uncertainty", "quote": "exact source substring"}` |
 | `era` | str \| null | period; null if unknowable |
 | `region` | str \| null | place/setting; null if unknowable |
@@ -109,10 +111,37 @@ observations. A starter shot per action is an authoring scaffold, not a
 recovered edit, measured duration or verified camera setup. Use the same
 rules for English and Chinese source text without translating quoted evidence.
 
+## Cover each scene with shots
+
+`coverage` proposes the shots, in screen order. Each entry is one shot:
+
+`{"actions": [int], "lines": [int], "shot_size": str|null, "angle": str|null, "position": str|null,
+"camera_side": "A"|"B"|null, "crosses_axis": bool, "focus": "id"|null, "speaker": "id"|null,
+"eyeline_to": "id"|null, "basis": "exact source substring"}`
+
+- `actions` are 0-based `key_actions` indices the shot shows, in order. Every action is in at least one shot;
+  an exchange may cover one action with several shots.
+- `lines` are 0-based `dialogue` indices spoken in the shot. Every line is in exactly one shot, in source order.
+- Split an exchange by turns, as shot and reverse shot on the speaker (or on a listener whose reaction is the
+  point). Do not put a whole exchange between two people in one shot unless the text asks for a two-shot.
+- `shot_size` is one of `establishing`, `wide`, `full`, `medium`, `medium_close_up`, `close_up`,
+  `extreme_close_up`; `angle` one of `eye_level`, `high`, `low`, `overhead`; `position` one of `front`,
+  `three_quarter`, `profile`, `ots`, `behind`. Choose them from what the audience must read in the shot: an entrance or a
+  new place is wide or full, a spoken turn medium_close_up, a reaction or a decision close_up, a prop or a figure that carries
+  the story (a phone balance, a key) extreme_close_up.
+- `focus` is the one thing the audience reads: a present character's ID, or a prop named in the text.
+  `speaker` is the character speaking in the shot (null for a silent shot). `eyeline_to` is who or what they look at.
+- `camera_side` keeps the camera on one side of `axis`: shots of the exchange stay on `A` unless the text moves the
+  camera or a character across the line; then set `crosses_axis` and quote why in `basis`.
+- `basis` quotes the source text the choices rest on. Use null for any value the text gives no ground for;
+  never fill one value everywhere.
+
+These are proposals for a director to review, not a recovered edit.
+
 ## What this skill does not settle
 
-`key_actions` sets the initial shot granularity, one shot and one starter
-panel per action. It is a **definition, not a decision rule**: nothing in it
+`coverage` proposes the shots; without it `key_actions` sets the initial shot granularity, one shot and one
+starter panel per action. Neither is a **decision rule**: nothing in it
 says what makes two movements one action rather than two, so that granularity
 is the model's. It also reads nothing from a world-state timeline, which is
 what separates it from `segment-on-state-change`. Where the cuts belong at
