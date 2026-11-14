@@ -117,7 +117,7 @@ rules for English and Chinese source text without translating quoted evidence.
 
 `{"actions": [int], "lines": [int], "shot_size": str|null, "angle": str|null, "position": str|null,
 "camera_side": "A"|"B"|null, "crosses_axis": bool, "focus": "id"|null, "speaker": "id"|null,
-"eyeline_to": "id"|null, "basis": "exact source substring"}`
+"eyeline_to": "id"|"prop"|null, "basis": "exact source substring"}`
 
 - `actions` are 0-based `key_actions` indices the shot shows, in order. Every action is in at least one shot;
   an exchange may cover one action with several shots.
@@ -130,11 +130,14 @@ rules for English and Chinese source text without translating quoted evidence.
   new place is wide or full, a spoken turn medium_close_up, a reaction or a decision close_up, a prop or a figure that carries
   the story (a phone balance, a key) extreme_close_up.
 - `focus` is the one thing the audience reads: a present character's ID, or a prop named in the text.
-  `speaker` is the character speaking in the shot (null for a silent shot). `eyeline_to` is who or what they look at.
+  `speaker` is the character speaking in the shot (null for a silent shot). `eyeline_to` is who they look at, or a prop named in the text.
 - `camera_side` keeps the camera on one side of `axis`: shots of the exchange stay on `A` unless the text moves the
   camera or a character across the line; then set `crosses_axis` and quote why in `basis`.
 - `basis` quotes the source text the choices rest on. Use null for any value the text gives no ground for;
   never fill one value everywhere.
+
+Before answering, walk the entries in order and check that their `lines` read 0, 1, 2, … with none skipped or
+repeated, and that every action index appears.
 
 These are proposals for a director to review, not a recovered edit.
 
